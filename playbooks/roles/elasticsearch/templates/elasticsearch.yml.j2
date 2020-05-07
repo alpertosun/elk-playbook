@@ -1,0 +1,29 @@
+cluster.name: testname
+node.name: playground-1
+#path.data: /path/to/data
+#path.logs: /path/to/logs
+#bootstrap.memory_lock: true
+
+{% if es_listen_external %}
+network.host: 0.0.0.0
+{% endif %}
+
+{% if not es_listen_external %}
+#network.host: {{ ansible_default_ipv4.address }}
+{% endif %}
+
+http.port: {{ elastic_port }}
+#discovery.zen.ping.unicast.hosts: ["playground-1"]
+discovery.seed_hosts:
+{% for item in ansible_play_batch %}
+- "{{ item }}"
+{% endfor %}
+discovery.zen.minimum_master_nodes: 1
+#gateway.recover_after_nodes: 3
+#action.destructive_requires_name: true
+xpack.security.enabled: false
+xpack.security.transport.ssl.enabled: false
+cluster.initial_master_nodes:
+{% for item in ansible_play_batch %}
+- "{{ item }}"
+{% endfor %}

@@ -1,0 +1,9 @@
+- name: Download packages
+  get_url:
+    url: "{{ items }}"
+    dest: "/tmp/"
+  with_items:
+  - https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-x86_64.rpm
+  - https://artifacts.elastic.co/downloads/logstash/logstash-7.6.2.rpm
+  - https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-x86_64.rpm
+  - https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-x86_64.rpm

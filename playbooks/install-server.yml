@@ -1,0 +1,15 @@
+- hosts: elk-server
+  become: true
+  roles:
+  - elasticsearch
+  - kibana
+  - logstash
+  vars:
+    elastic_port: 30000
+    es_listen_external: false
+    kibana_http_port: 31000
+    kibana_http_enabled: true
+    kibana_user: admin
+    kibana_password: admin
+    logstash_input_port: 32000
+    logstash_index_name: test

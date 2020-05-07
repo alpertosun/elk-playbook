@@ -1,0 +1,23 @@
+input {
+  tcp {
+    port => {{ logstash_input_port }}
+    type => syslog
+  }
+  udp {
+    port => {{ logstash_input_port }}
+    type => syslog
+  }
+}
+
+output {
+elasticsearch {
+  hosts => ["localhost:{{ elastic_port }}"]
+  index => {{ logstash_index_name }}
+ }
+}
+
+input {
+  beats {
+    port => {{ logstash_input_port }}
+  }
+}

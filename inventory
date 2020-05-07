@@ -1,0 +1,2 @@
+[elk-server]
+playground-1 ansible_user=root ansible_password=psswrd ansible_ssh_host=hostip

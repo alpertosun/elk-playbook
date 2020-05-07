@@ -1,0 +1,47 @@
+
+- name: Copy kibana yum repo file
+  copy:
+    src=kibana.repo
+    dest=/etc/yum.repos.d/kibana.repo
+    owner=root
+    group=root
+    mode=0644
+  become: true
+
+- name: Install kibana
+  yum:
+    name: [kibana, unzip]
+    enablerepo: kibana-7.x
+    state: latest
+  become: true
+  register: installkibana
+
+- name: Copy templated kibana.yml
+  template:
+    src=kibana.yml.j2
+    dest=/etc/kibana/kibana.yml
+    owner=root
+    group=root
+    mode=0644
+  become: true
+  ignore_errors: true
+
+- name: Check kibana users
+  stat: path=/etc/htpasswd.users
+  ignore_errors: true
+  register: kibana_user_pwfile_exists
+  become: true
+
+- name: Create kibana admin user
+  command: htpasswd -b -c /etc/htpasswd.users {{kibana_user}} {{kibana_password}}
+  ignore_errors: true
+  when: kibana_user_pwfile_exists != 0
+  become: true
+
+- name: Setup kibana service
+  service: name=kibana state=started enabled=true
+  become: true
+
+- name: Restart kibana server
+  command: systemctl restart kibana.service
+  become: true
