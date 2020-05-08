@@ -1,0 +1,15 @@
+- hosts: localhost
+  roles:
+  - install_packages
+  tags:
+  - client
+  - copy
+
+- hosts: elk-client
+  become: true
+  roles:
+  - filebeat
+  vars:
+    serverip: 192.168.2.101
+    elastic_port: 30000
+    logstash_input_port: 32000

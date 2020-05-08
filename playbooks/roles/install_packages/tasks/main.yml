@@ -51,3 +51,27 @@
     dest: "/tmp/"
   when: not filebeat_result.stat.exists
   tags: client
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/elasticsearch-7.6.2-x86_64.rpm
+    dest: /tmp/elasticsearch-7.6.2-x86_64.rpm
+  tags: copy, server
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/logstash-7.6.2.rpm
+    dest: /tmp/logstash-7.6.2.rpm
+  tags: copy, server
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/kibana-7.6.2-x86_64.rpm
+    dest: /tmp/kibana-7.6.2-x86_64.rpm
+  tags: copy, server
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/filebeat-7.6.2-x86_64.rpm
+    dest: /tmp/filebeat-7.6.2-x86_64.rpm
+  tags: copy, client
