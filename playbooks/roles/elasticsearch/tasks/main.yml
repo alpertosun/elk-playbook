@@ -1,4 +1,23 @@
 
+- name: Check elastic downloaded
+  stat:
+    path: /tmp/elasticsearch-7.6.2-x86_64.rpm
+  register: es_result
+  delegate_to: 127.0.0.1
+
+- name: Download elasticsearch
+  get_url:
+    url: https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.6.2-x86_64.rpm
+    dest: "/tmp/"
+  when: not es_result.stat.exists
+  delegate_to: 127.0.0.1
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/elasticsearch-7.6.2-x86_64.rpm
+    dest: /tmp/elasticsearch-7.6.2-x86_64.rpm
+  delegate_to: 127.0.0.1
+
 - name: Copy elasticsearch yum repo file
   copy:
     src=elasticsearch.repo

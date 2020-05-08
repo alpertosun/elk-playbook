@@ -1,21 +1,10 @@
-
-- name: Check elastic downloaded
-  stat:
-    path: /tmp/elasticsearch-7.6.2-x86_64.rpm
-  register: es_result
-  tags: server
-
 - name: Check logstash downloaded
   stat:
     path: /tmp/logstash-7.6.2.rpm
   register: logstash_result
   tags: server
 
-- name: Check kibana downloaded
-  stat:
-    path: /tmp/kibana-7.6.2-x86_64.rpm
-  register: kibana_result
-  tags: server
+
 
 - name: Download elasticsearch
   get_url:
@@ -31,37 +20,16 @@
   when: not logstash_result.stat.exists
   tags: server
 
-- name: Download kibana
-  get_url:
-    url: https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-x86_64.rpm
-    dest: "/tmp/"
-  when: not kibana_result.stat.exists
+
   tags: server
 
 
-- name: Check filebeat downloaded
-  stat:
-    path: /tmp/filebeat-7.6.2-x86_64.rpm
-  register: filebeat_result
-  tags: client
 
-- name: Download filebeat
-  get_url:
-    url: https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-x86_64.rpm
-    dest: "/tmp/"
-  when: not filebeat_result.stat.exists
-  tags: client
 
-- name: Copy files to remote
-  copy:
-    src: /tmp/elasticsearch-7.6.2-x86_64.rpm
-    dest: /tmp/elasticsearch-7.6.2-x86_64.rpm
+
   tags: copy, server
 
-- name: Copy files to remote
-  copy:
-    src: /tmp/logstash-7.6.2.rpm
-    dest: /tmp/logstash-7.6.2.rpm
+
   tags: copy, server
 
 - name: Copy files to remote
@@ -69,9 +37,3 @@
     src: /tmp/kibana-7.6.2-x86_64.rpm
     dest: /tmp/kibana-7.6.2-x86_64.rpm
   tags: copy, server
-
-- name: Copy files to remote
-  copy:
-    src: /tmp/filebeat-7.6.2-x86_64.rpm
-    dest: /tmp/filebeat-7.6.2-x86_64.rpm
-  tags: copy, client

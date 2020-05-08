@@ -1,3 +1,23 @@
+
+- name: Check logstash downloaded
+  stat:
+    path: /tmp/logstash-7.6.2.rpm
+  register: logstash_result
+  delegate_to: 127.0.0.1
+
+- name: Download logstash
+  get_url:
+    url: https://artifacts.elastic.co/downloads/logstash/logstash-7.6.2.rpm
+    dest: "/tmp/"
+  when: not logstash_result.stat.exists
+  delegate_to: 127.0.0.1
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/logstash-7.6.2.rpm
+    dest: /tmp/logstash-7.6.2.rpm
+  delegate_to: 127.0.0.1
+
 - name: Copy logstash yum repo file
   copy:
     src=logstash.repo

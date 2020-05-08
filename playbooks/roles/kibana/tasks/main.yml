@@ -1,3 +1,21 @@
+- name: Check kibana downloaded
+  stat:
+    path: /tmp/kibana-7.6.2-x86_64.rpm
+  register: kibana_result
+  delegate_to: 127.0.0.1
+
+- name: Download kibana
+  get_url:
+    url: https://artifacts.elastic.co/downloads/kibana/kibana-7.6.2-x86_64.rpm
+    dest: "/tmp/"
+  when: not kibana_result.stat.exists
+  delegate_to: 127.0.0.1
+
+- name: Copy files to remote
+  copy:
+    src: /tmp/kibana-7.6.2-x86_64.rpm
+    dest: /tmp/kibana-7.6.2-x86_64.rpm
+  delegate_to: 127.0.0.1
 
 - name: Copy kibana yum repo file
   copy:
