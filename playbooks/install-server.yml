@@ -1,3 +1,9 @@
+- hosts: localhost
+  roles:
+  - install_packages
+  tags:
+  - server
+
 - hosts: elk-server
   become: true
   roles:
